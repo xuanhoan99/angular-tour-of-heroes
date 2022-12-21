@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Hero } from './hero';
-import { HEROES } from './mock-heroes';
+import { Hero } from '../hero';
+import { HEROES } from '../mock-heroes';
 import { Observable, of } from 'rxjs';
-import { MessageService } from './message.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, map, tap } from 'rxjs/operators';
-
+import { catchError, delay, map, tap } from 'rxjs/operators';
+import { MessageService } from './message.service';
+const ALTER_EGOS = ['Eric'];
 @Injectable({
   providedIn: 'root'
 })
@@ -97,6 +97,12 @@ searchHeroes(term: string): Observable<Hero[]> {
        this.log(`found heroes matching "${term}"`) :
        this.log(`no heroes matching "${term}"`)),
     catchError(this.handleError<Hero[]>('searchHeroes', []))
-  );
+  );  
+}
+
+isAlterEgoTaken(alterEgo: string): Observable<boolean> {
+  const isTaken = ALTER_EGOS.includes(alterEgo);
+
+  return of(isTaken).pipe(delay(400));
 }
 }
